@@ -12,6 +12,7 @@
     <artifactId>content-manager</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>content-manager</name>
+    <packaging>jar</packaging>
     <description>Taboola content manager home task</description>
 
     <properties>
