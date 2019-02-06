@@ -5,4 +5,6 @@ import com.taboola.contentmanager.models.CreateContentItemRequest;
 
 public interface CrudRequestHandler {
     ContentManagerCrudResponse create(CreateContentItemRequest createContentItemRequest);
+
+    ContentManagerCrudResponse getAll(Integer from, Integer dataSize);
 }
