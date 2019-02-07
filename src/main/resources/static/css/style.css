@@ -103,6 +103,16 @@ table.table .avatar {
     vertical-align: middle;
     margin-right: 10px;
 }
+
+.table .img img{
+    width: 250px;
+    height: 150px;
+}
+
+.country-chooser{
+    width: 100%;
+}
+
 .pagination {
     float: right;
     margin: 0 0 5px;
@@ -149,6 +159,7 @@ table.table .avatar {
     position: absolute;
     margin: 5px 0 0 3px;
     z-index: 9;
+    cursor: pointer;
 }
 .custom-checkbox label:before{
     width: 18px;

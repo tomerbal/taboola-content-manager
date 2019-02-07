@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("content")
+@Document(collection = "content")
 public class ContentItem {
     private String countryCode;
     private String brand;

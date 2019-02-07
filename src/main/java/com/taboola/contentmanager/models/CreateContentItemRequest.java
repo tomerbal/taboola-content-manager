@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class CreateContentItemRequest {
     @NotNull
-    private String countryCode;
+    private String country;
     @NotNull
     private String brand;
     @NotNull
