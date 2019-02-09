@@ -1,6 +1,7 @@
-package com.taboola.contentmanager.services.requesthandlers;
+package com.taboola.contentmanager.services.requesthandlers.contentitem;
 
 import com.taboola.contentmanager.contracts.ContentItemContract;
+import com.taboola.contentmanager.dal.Brand;
 import com.taboola.contentmanager.dal.ContentItem;
 import com.taboola.contentmanager.dal.Country;
 import com.taboola.contentmanager.dal.Error;
@@ -8,6 +9,7 @@ import com.taboola.contentmanager.models.ContentManagerCrudResponse;
 import com.taboola.contentmanager.models.CreateContentItemRequest;
 import com.taboola.contentmanager.models.GetAllContentItemsResponse;
 import com.taboola.contentmanager.services.ErrorsContainer;
+import com.taboola.contentmanager.services.dal.BrandsRepo;
 import com.taboola.contentmanager.services.dal.ContentItemRepo;
 import com.taboola.contentmanager.services.dal.CountriesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -24,12 +27,14 @@ public class ContentItemCrudRequestHandlerImpl implements ContentItemCrudRequest
 
     private final ContentItemRepo contentItemRepo;
     private final CountriesRepo countriesRepo;
+    private final BrandsRepo brandsRepo;
     private final ErrorsContainer errorsContainer;
 
     @Autowired
-    public ContentItemCrudRequestHandlerImpl(ContentItemRepo contentItemRepo, CountriesRepo countriesRepo, ErrorsContainer errorsContainer) {
+    public ContentItemCrudRequestHandlerImpl(ContentItemRepo contentItemRepo, CountriesRepo countriesRepo, BrandsRepo brandsRepo, ErrorsContainer errorsContainer) {
         this.contentItemRepo = contentItemRepo;
         this.countriesRepo = countriesRepo;
+        this.brandsRepo = brandsRepo;
         this.errorsContainer = errorsContainer;
     }
 
@@ -45,11 +50,21 @@ public class ContentItemCrudRequestHandlerImpl implements ContentItemCrudRequest
                 return new ContentManagerCrudResponse(code, msg);
             }
 
+            String brandName = createContentItemRequest.getBrand();
+
+            Optional<Brand> optionalBrand = brandsRepo.findByName(brandName);
+            if (!optionalBrand.isPresent()) {
+                Integer code = 401;
+                Error error = errorsContainer.getErrors().get(code);
+                String msg = error.getMessage() + " - brand";
+                return new ContentManagerCrudResponse(code, msg);
+            }
+
             Country country = optionalCountry.get();
-            String brand = createContentItemRequest.getBrand();
+            Brand brand = optionalBrand.get();
             String img = createContentItemRequest.getImg();
             String title = createContentItemRequest.getTitle();
-            ContentItem contentItem = new ContentItem(country.getCode(), brand, title, img);
+            ContentItem contentItem = new ContentItem(country.get_id(), brand.get_id(), title, img);
             contentItemRepo.insert(contentItem);
             return new ContentManagerCrudResponse(200, "success");
         }
@@ -61,21 +76,34 @@ public class ContentItemCrudRequestHandlerImpl implements ContentItemCrudRequest
     @Override
     public ContentManagerCrudResponse getAll(Integer from, Integer dataSize) {
         try {
+
             Page<ContentItem> contentItems = contentItemRepo.findAll(PageRequest.of(from, dataSize));
             long totalElements = contentItems.getTotalElements();
             List<ContentItem> contentItemList = contentItems.get().collect(Collectors.toList());
-            Set<String> countryCodes = contentItemList.stream().map(ContentItem::getCountryCode).collect(Collectors.toSet());
-            List<Country> countries = countriesRepo.findByCodeIn(new ArrayList<>(countryCodes));
-            Map<String, Country> countryMap = countries.stream().collect(Collectors.toMap(Country::getCode,
+
+            Set<String> countryIds = contentItemList.stream().map(ContentItem::getCountryId).collect(Collectors.toSet());
+            Iterable<Country> countryIterable = countriesRepo.findAllById(new ArrayList<>(countryIds));
+            List<Country> countries = new ArrayList<>();
+            countryIterable.forEach(countries::add);
+            Map<String, Country> countryMap = countries.stream().collect(Collectors.toMap(Country::get_id,
                     Function.identity()));
+
+            Set<String> brandIds = contentItemList.stream().map(ContentItem::getBrandId).collect(Collectors.toSet());
+            Iterable<Brand> brandIterable = brandsRepo.findAllById(new ArrayList<>(brandIds));
+            List<Brand> brands = new ArrayList<>();
+            brandIterable.forEach(brands::add);
+            Map<String, Brand> brandMap = brands.stream().collect(Collectors.toMap(Brand::get_id,
+                    Function.identity()));
+
             List<ContentItemContract> contentItemContracts = new ArrayList<>();
             for (ContentItem contentItem : contentItemList) {
-                Country country = countryMap.get(contentItem.getCountryCode());
+                Country country = countryMap.get(contentItem.getCountryId());
                 String countryName = country.getName();
-                String brand = contentItem.getBrand();
+                Brand brand = brandMap.get(contentItem.getBrandId());
+                String brandName = brand.getName();
                 String title = contentItem.getTitle();
                 String img = contentItem.getImg();
-                ContentItemContract contentItemContract = new ContentItemContract(countryName, brand, title, img);
+                ContentItemContract contentItemContract = new ContentItemContract(countryName, brandName, title, img);
                 contentItemContracts.add(contentItemContract);
             }
             return new GetAllContentItemsResponse(200, "success", contentItemContracts, totalElements);

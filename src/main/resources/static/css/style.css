@@ -109,10 +109,6 @@ table.table .avatar {
     height: 150px;
 }
 
-.country-chooser{
-    width: 100%;
-}
-
 .pagination {
     float: right;
     margin: 0 0 5px;

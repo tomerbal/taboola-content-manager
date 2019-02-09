@@ -1,6 +1,7 @@
 package com.taboola.contentmanager.controllers;
 
 import com.taboola.contentmanager.models.ContentManagerCrudResponse;
+import com.taboola.contentmanager.services.requesthandlers.brand.BrandCrudRequestHandler;
 import com.taboola.contentmanager.services.requesthandlers.country.CountryCrudRequestHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,18 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/country")
-public class CountryCrudController {
+@RequestMapping("/brand")
+public class BrandCrudController {
 
-    private final CountryCrudRequestHandler countryCrudRequestHandler;
+    private final BrandCrudRequestHandler brandCrudRequestHandler;
 
     @Autowired
-    public CountryCrudController( CountryCrudRequestHandler countryCrudRequestHandler) {
-        this.countryCrudRequestHandler = countryCrudRequestHandler;
+    public BrandCrudController(BrandCrudRequestHandler brandCrudRequestHandler) {
+        this.brandCrudRequestHandler = brandCrudRequestHandler;
     }
 
     @GetMapping("/get-all")
     public ContentManagerCrudResponse getAll() {
-        return countryCrudRequestHandler.getAll();
+        return brandCrudRequestHandler.getAll();
     }
 }

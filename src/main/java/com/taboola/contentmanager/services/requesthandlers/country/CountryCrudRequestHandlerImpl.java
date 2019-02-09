@@ -1,4 +1,4 @@
-package com.taboola.contentmanager.services.requesthandlers;
+package com.taboola.contentmanager.services.requesthandlers.country;
 
 import com.taboola.contentmanager.dal.Country;
 import com.taboola.contentmanager.models.ContentManagerCrudResponse;

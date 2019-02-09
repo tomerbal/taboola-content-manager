@@ -1,4 +1,4 @@
-package com.taboola.contentmanager.services.requesthandlers;
+package com.taboola.contentmanager.services.requesthandlers.contentitem;
 
 import com.taboola.contentmanager.models.ContentManagerCrudResponse;
 import com.taboola.contentmanager.models.CreateContentItemRequest;

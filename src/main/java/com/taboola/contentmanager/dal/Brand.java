@@ -8,13 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "content")
-public class ContentItem {
-
-    private String countryId;
-    private String brandId;
-    private String title;
-    private String img;
-
-
+@Document(collection = "brands")
+public class Brand {
+    private String _id;
+    private String name;
 }

@@ -1,35 +1,107 @@
 $(document).ready(function () {
 
     var index = 0;
-    $('.country-chooser').select2();
     getCountries();
+    getBrands();
     getAllData(index);
+
+    $('#insertForm').submit(function (event) {
+        event.preventDefault();
+        var data = {};
+        var insertInput = $(".insert-input");
+        insertInput.each(function () {
+            data[$(this).attr("name")] = $(this).val().length > 0 ? $(this).val() : $(this).attr("val");
+        });
+        $.ajax({
+            url: '/content-item/create',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            cache: false,
+            success: function () {
+                insertInput.each(function () {
+                    $(this).val("");
+                });
+                $("#genericMessage").text("Item created successfully");
+                $("#genericCode").text(200);
+                $("#genericModal").modal();
+            },
+            error: function (data) {
+                $("#genericMessage").text("There was an error inserting the item");
+                $("#genericCode").text(data.status);
+                $("#genericModal").modal();
+            }
+        });
+    });
 });
+
+function getBrands() {
+    var errMsg = "There was an error retrieving brands";
+    $.get("/brand/get-all", function (data) {
+        if (data.status !== 200) {
+            $("#genericMessage").text(errMsg);
+            $("#genericCode").text(data.status);
+            $("#genericModal").modal();
+        } else {
+            for (var i in data.brands) {
+                brands.push(
+                    {
+                        text: data.brands[i],
+                        id: parseInt(i)
+                    }
+                );
+            }
+            var brandInput = $("#brandInput");
+            $("#brandChooser").select2({
+                data: brands,
+                placeholder: brands[0].text
+            }).on('select2:select', function (e) {
+                var data = e.params.data;
+                brandInput.attr("val", data.text);
+            });
+            brandInput.attr("val", brands[0].text);
+        }
+    })
+        .fail(function (err) {
+            $("#genericMessage").text(errMsg);
+            $("#genericCode").text(err.status);
+            $("#genericModal").modal();
+        });
+}
+
 
 function getCountries() {
     var errMsg = "There was an error retrieving countries";
     $.get("/country/get-all", function (data) {
         if (data.status !== 200) {
-            $("#errorMessage").text(errMsg);
-            $("#errorCode").text(data.status);
-            $("#errorModal").modal();
+            $("#genericMessage").text(errMsg);
+            $("#genericCode").text(data.status);
+            $("#genericModal").modal();
         } else {
             for (var i in data.countries) {
                 countries.push(
                     {
-                        value: data.countries[i].name
+                        text: data.countries[i].name,
+                        id: parseInt(i)
                     }
                 );
-
             }
-            console.log(countries);
-
+            var countryInput = $("#countryInput");
+            $("#countryChooser").select2({
+                data: countries,
+                placeholder: countries[0].text
+            }).on('select2:select', function (e) {
+                var data = e.params.data;
+                countryInput.attr("val", data.text);
+            });
+            countryInput.attr("val", countries[0].text);
         }
     })
         .fail(function (err) {
-            $("#errorMessage").text(errMsg);
-            $("#errorCode").text(err.status);
-            $("#errorModal").modal();
+            $("#genericMessage").text(errMsg);
+            $("#genericCode").text(err.status);
+            $("#genericModal").modal();
         });
 }
 
@@ -37,17 +109,17 @@ function getAllData(from) {
     var errMsg = "There was an error retrieving the data";
     $.get("/content-item/get-all-content-items/" + from + "/" + config.batchSize, function (data) {
         if (data.status !== 200) {
-            $("#errorMessage").text(errMsg);
-            $("#errorCode").text(data.status);
-            $("#errorModal").modal();
+            $("#genericMessage").text(errMsg);
+            $("#genericCode").text(data.status);
+            $("#genericModal").modal();
         } else {
             fillDashboard(from, data);
             initDashboard();
         }
     })
         .fail(function (err) {
-            $("#errorMessage").text(errMsg);
-            $("#errorCode").text(err.status);
+            $("#genericMessage").text(errMsg);
+            $("#genericCode").text(err.status);
             $("#errorModal").modal();
         });
 }
@@ -77,7 +149,6 @@ function initDashboard() {
 }
 
 function fillDashboard(from, data) {
-    console.log(data);
     $("#dashboardTableBody").html("");
     var to = from + config.batchSize;
     var showingTo = $("#showingTo");
