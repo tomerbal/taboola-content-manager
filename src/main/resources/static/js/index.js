@@ -5,36 +5,7 @@ $(document).ready(function () {
     getBrands();
     getAllData(index);
 
-    $('#insertForm').submit(function (event) {
-        event.preventDefault();
-        var data = {};
-        var insertInput = $(".insert-input");
-        insertInput.each(function () {
-            data[$(this).attr("name")] = $(this).val().length > 0 ? $(this).val() : $(this).attr("val");
-        });
-        $.ajax({
-            url: '/content-item/create',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            dataType: 'json',
-            cache: false,
-            success: function () {
-                getAllData(index);
-                insertInput.each(function () {
-                    $(this).val("");
-                });
-                $("#genericMessage").text("Item created successfully");
-                $("#genericCode").text(200);
-                $("#genericModal").modal();
-            },
-            error: function (data) {
-                $("#genericMessage").text("There was an error inserting the item");
-                $("#genericCode").text(data.status);
-                $("#genericModal").modal();
-            }
-        });
-    });
+    initInsert();
 });
 
 function getBrands() {
@@ -167,7 +138,7 @@ function fillDashboard(from, data) {
     }
     $(".page-item").not("#firstPage").remove();
     var last = $("#paginationList #firstPage");
-    if (from + 1 === 1){
+    if (from + 1 === 1) {
         $("#firstPage").addClass("active");
     }
     for (var i = 2; i <= numOfPages; i++) {
@@ -191,6 +162,7 @@ function fillDashboard(from, data) {
             $jQueryItemContent.find(".brand").text(item.brand);
             $jQueryItemContent.find(".title").text(item.title);
             $jQueryItemContent.find(".img img").attr("src", item.img);
+            $jQueryItemContent.attr("itemId", item.id);
             $("#dashboardTableBody").append($jQueryItemContent);
         }
     });

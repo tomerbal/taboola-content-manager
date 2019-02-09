@@ -7,6 +7,7 @@ import com.taboola.contentmanager.dal.Country;
 import com.taboola.contentmanager.dal.Error;
 import com.taboola.contentmanager.models.ContentManagerCrudResponse;
 import com.taboola.contentmanager.models.CreateContentItemRequest;
+import com.taboola.contentmanager.models.DeleteContentItemRequest;
 import com.taboola.contentmanager.models.GetAllContentItemsResponse;
 import com.taboola.contentmanager.services.ErrorsContainer;
 import com.taboola.contentmanager.services.dal.BrandsRepo;
@@ -67,8 +68,7 @@ public class ContentItemCrudRequestHandlerImpl implements ContentItemCrudRequest
             ContentItem contentItem = new ContentItem(country.get_id(), brand.get_id(), title, img);
             contentItemRepo.insert(contentItem);
             return new ContentManagerCrudResponse(200, "success");
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             return new ContentManagerCrudResponse(500, e.getMessage());
         }
     }
@@ -103,12 +103,21 @@ public class ContentItemCrudRequestHandlerImpl implements ContentItemCrudRequest
                 String brandName = brand.getName();
                 String title = contentItem.getTitle();
                 String img = contentItem.getImg();
-                ContentItemContract contentItemContract = new ContentItemContract(countryName, brandName, title, img);
+                ContentItemContract contentItemContract = new ContentItemContract(contentItem.get_id(), countryName, brandName, title, img);
                 contentItemContracts.add(contentItemContract);
             }
             return new GetAllContentItemsResponse(200, "success", contentItemContracts, totalElements);
+        } catch (Exception e) {
+            return new ContentManagerCrudResponse(500, e.getMessage());
         }
-        catch(Exception e){
+    }
+
+    @Override
+    public ContentManagerCrudResponse delete(DeleteContentItemRequest deleteContentItemRequest) {
+        try {
+            contentItemRepo.deleteById(deleteContentItemRequest.getItemId());
+            return new ContentManagerCrudResponse(200, "success");
+        } catch (Exception e) {
             return new ContentManagerCrudResponse(500, e.getMessage());
         }
     }
