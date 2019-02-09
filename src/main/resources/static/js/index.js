@@ -20,6 +20,7 @@ $(document).ready(function () {
             dataType: 'json',
             cache: false,
             success: function () {
+                getAllData(index);
                 insertInput.each(function () {
                     $(this).val("");
                 });
@@ -107,7 +108,9 @@ function getCountries() {
 
 function getAllData(from) {
     var errMsg = "There was an error retrieving the data";
+    console.log("Getting  /content-item/get-all-content-items/" + from);
     $.get("/content-item/get-all-content-items/" + from + "/" + config.batchSize, function (data) {
+        console.log(data);
         if (data.status !== 200) {
             $("#genericMessage").text(errMsg);
             $("#genericCode").text(data.status);
@@ -150,30 +153,36 @@ function initDashboard() {
 
 function fillDashboard(from, data) {
     $("#dashboardTableBody").html("");
-    var to = from + config.batchSize;
-    var showingTo = $("#showingTo");
-    $("#showingFrom").text(from + 1);
-    showingTo.text(parseInt(to));
+    var showingFrom = from * config.batchSize + 1;
+    var showingTo = showingFrom + data.contentItems.length - 1;
+    $("#showingTo").text(showingTo);
+    $("#showingFrom").text(showingFrom);
     if (from === 0) {
         $("#previousButton").hide();
     } else {
         $("#previousButton").show();
     }
     $("#outOf").text(data.outOf);
-    var numOfPages = data.contentItems.length / config.batchSize;
-    if (data.contentItems.length % config.batchSize > 0) {
+    var numOfPages = data.outOf / config.batchSize;
+    if (data.outOf % config.batchSize > 0) {
         numOfPages++;
     }
-    $(".page-item").not(".active").remove();
+    $(".page-item").not("#firstPage").remove();
     var last = $("#paginationList #firstPage");
-    for (var i = 2; i <= numOfPages; i++) {
-        last.after('<li class="page-item"><a href="#" class="page-link">' + i + '</a></li>');
+    if (from + 1 === 1){
+        $("#firstPage").addClass("active");
     }
-    $.get("../htmls/item-content.html", function (htmlItem) {
-        if (data.contentItems.length % config.batchSize !== 0) {
-            $("#showingTo").text(from + data.contentItems.length);
+    for (var i = 2; i <= numOfPages; i++) {
+        if (i === from + 1) {
+            last.after('<li class="page-item active"><a class="page-link" onclick="paging(this)">' + i + '</a></li>');
+        } else {
+            last.after('<li class="page-item"><a class="page-link" onclick="paging(this)">' + i + '</a></li>');
         }
+    }
+
+    $.get("../htmls/item-content.html", function (htmlItem) {
         for (var i in data.contentItems) {
+            console.log(i);
             var item = data.contentItems[i];
             var $jQueryItemContent = $($.parseHTML(htmlItem));
             var itemContentInputCheckbox = $jQueryItemContent.find(".itemContentInputCheckbox");
@@ -187,4 +196,12 @@ function fillDashboard(from, data) {
             $("#dashboardTableBody").append($jQueryItemContent);
         }
     });
+}
+
+
+function paging(element) {
+    $(".pagination").find(".active").removeClass("active");
+    //   $(this).parent().addClass("active");
+    console.log("clicked");
+    getAllData(parseInt(element.innerText) - 1);
 }

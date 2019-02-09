@@ -109,6 +109,10 @@ table.table .avatar {
     height: 150px;
 }
 
+.page-link{
+    cursor: pointer;
+}
+
 .pagination {
     float: right;
     margin: 0 0 5px;
