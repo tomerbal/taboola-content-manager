@@ -108,9 +108,7 @@ function getCountries() {
 
 function getAllData(from) {
     var errMsg = "There was an error retrieving the data";
-    console.log("Getting  /content-item/get-all-content-items/" + from);
     $.get("/content-item/get-all-content-items/" + from + "/" + config.batchSize, function (data) {
-        console.log(data);
         if (data.status !== 200) {
             $("#genericMessage").text(errMsg);
             $("#genericCode").text(data.status);
@@ -178,11 +176,11 @@ function fillDashboard(from, data) {
         } else {
             last.after('<li class="page-item"><a class="page-link" onclick="paging(this)">' + i + '</a></li>');
         }
+        last = $(".page-item").last();
     }
 
     $.get("../htmls/item-content.html", function (htmlItem) {
         for (var i in data.contentItems) {
-            console.log(i);
             var item = data.contentItems[i];
             var $jQueryItemContent = $($.parseHTML(htmlItem));
             var itemContentInputCheckbox = $jQueryItemContent.find(".itemContentInputCheckbox");
@@ -198,10 +196,7 @@ function fillDashboard(from, data) {
     });
 }
 
-
 function paging(element) {
     $(".pagination").find(".active").removeClass("active");
-    //   $(this).parent().addClass("active");
-    console.log("clicked");
     getAllData(parseInt(element.innerText) - 1);
 }
