@@ -5,10 +5,7 @@ import com.taboola.contentmanager.dal.Brand;
 import com.taboola.contentmanager.dal.ContentItem;
 import com.taboola.contentmanager.dal.Country;
 import com.taboola.contentmanager.dal.Error;
-import com.taboola.contentmanager.models.ContentManagerCrudResponse;
-import com.taboola.contentmanager.models.CreateContentItemRequest;
-import com.taboola.contentmanager.models.DeleteContentItemRequest;
-import com.taboola.contentmanager.models.GetAllContentItemsResponse;
+import com.taboola.contentmanager.models.*;
 import com.taboola.contentmanager.services.ErrorsContainer;
 import com.taboola.contentmanager.services.dal.BrandsRepo;
 import com.taboola.contentmanager.services.dal.ContentItemRepo;
@@ -116,6 +113,52 @@ public class ContentItemCrudRequestHandlerImpl implements ContentItemCrudRequest
     public ContentManagerCrudResponse delete(DeleteContentItemRequest deleteContentItemRequest) {
         try {
             contentItemRepo.deleteById(deleteContentItemRequest.getItemId());
+            return new ContentManagerCrudResponse(200, "success");
+        } catch (Exception e) {
+            return new ContentManagerCrudResponse(500, e.getMessage());
+        }
+    }
+
+    @Override
+    public ContentManagerCrudResponse edit(EditContentItemRequest editContentItemRequest) {
+        try {
+            String itemId = editContentItemRequest.getItemId();
+            Optional<ContentItem> itemOptional = contentItemRepo.findById(itemId);
+            if (!itemOptional.isPresent()){
+                int errorCode = 402;
+                Error error = errorsContainer.getErrors().get(errorCode);
+                return new ContentManagerCrudResponse(errorCode, error.getMessage() + ", id: " + itemId);
+            }
+
+            ContentItem contentItem = itemOptional.get();
+            String brandName = editContentItemRequest.getBrand();
+
+            Optional<Brand> optionalBrand = brandsRepo.findByName(brandName);
+            if (!optionalBrand.isPresent()) {
+                Integer code = 401;
+                Error error = errorsContainer.getErrors().get(code);
+                String msg = error.getMessage() + " - brand";
+                return new ContentManagerCrudResponse(code, msg);
+            }
+
+            String countryName = editContentItemRequest.getCountry();
+            Optional<Country> optionalCountry = countriesRepo.findByName(countryName);
+            if (!optionalCountry.isPresent()) {
+                Integer code = 401;
+                Error error = errorsContainer.getErrors().get(code);
+                String msg = error.getMessage() + " - country";
+                return new ContentManagerCrudResponse(code, msg);
+            }
+
+             String img = editContentItemRequest.getImg();
+             String title = editContentItemRequest.getTitle();
+             contentItem.setBrandId(optionalBrand.get().get_id());
+             contentItem.setCountryId(optionalCountry.get().get_id());
+             contentItem.setImg(img);
+             contentItem.setTitle(title);
+
+             contentItemRepo.save(contentItem);
+
             return new ContentManagerCrudResponse(200, "success");
         } catch (Exception e) {
             return new ContentManagerCrudResponse(500, e.getMessage());

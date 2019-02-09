@@ -4,6 +4,7 @@ import com.taboola.contentmanager.dal.Error;
 import com.taboola.contentmanager.models.ContentManagerCrudResponse;
 import com.taboola.contentmanager.models.CreateContentItemRequest;
 import com.taboola.contentmanager.models.DeleteContentItemRequest;
+import com.taboola.contentmanager.models.EditContentItemRequest;
 import com.taboola.contentmanager.services.ErrorsContainer;
 import com.taboola.contentmanager.services.requesthandlers.contentitem.ContentItemCrudRequestHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -50,5 +51,10 @@ public class ContentItemCrudController {
     @PostMapping("/delete")
     public ContentManagerCrudResponse create(@RequestBody @Valid DeleteContentItemRequest deleteContentItemRequest) {
         return contentItemCrudRequestHandler.delete(deleteContentItemRequest);
+    }
+
+    @PostMapping("/edit")
+    public ContentManagerCrudResponse edit(@RequestBody @Valid EditContentItemRequest editContentItemRequest) {
+        return contentItemCrudRequestHandler.edit(editContentItemRequest);
     }
 }

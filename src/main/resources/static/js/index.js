@@ -25,12 +25,21 @@ function getBrands() {
                 );
             }
             var brandInput = $("#brandInput");
+            var brandInputEdit = $("#brandInputEdit");
             $("#brandChooser").select2({
                 data: brands,
                 placeholder: brands[0].text
             }).on('select2:select', function (e) {
                 var data = e.params.data;
                 brandInput.attr("val", data.text);
+            });
+
+            $("#brandChooserEdit").select2({
+                data: brands,
+                placeholder: brands[0].text
+            }).on('select2:select', function (e) {
+                var data = e.params.data;
+                brandInputEdit.attr("val", data.text);
             });
             brandInput.attr("val", brands[0].text);
         }
@@ -41,7 +50,6 @@ function getBrands() {
             $("#genericModal").modal();
         });
 }
-
 
 function getCountries() {
     var errMsg = "There was an error retrieving countries";
@@ -60,12 +68,21 @@ function getCountries() {
                 );
             }
             var countryInput = $("#countryInput");
+            var countryInputEdit = $("#countryInputEdit");
             $("#countryChooser").select2({
                 data: countries,
                 placeholder: countries[0].text
             }).on('select2:select', function (e) {
                 var data = e.params.data;
                 countryInput.attr("val", data.text);
+            });
+
+            $("#countryChooserEdit").select2({
+                data: countries,
+                placeholder: countries[0].text
+            }).on('select2:select', function (e) {
+                var data = e.params.data;
+                countryInputEdit.attr("val", data.text);
             });
             countryInput.attr("val", countries[0].text);
         }
@@ -80,6 +97,7 @@ function getCountries() {
 function getAllData(from) {
     var errMsg = "There was an error retrieving the data";
     $.get("/content-item/get-all-content-items/" + from + "/" + config.batchSize, function (data) {
+        console.log(data);
         if (data.status !== 200) {
             $("#genericMessage").text(errMsg);
             $("#genericCode").text(data.status);
@@ -159,7 +177,7 @@ function fillDashboard(from, data) {
             var itemContentInputLabel = $jQueryItemContent.find(".itemContentInputLabel");
             itemContentInputLabel.attr("for", "checkbox" + i);
             $jQueryItemContent.find(".country").text(item.countryName);
-            $jQueryItemContent.find(".brand").text(item.brand);
+            $jQueryItemContent.find(".brand").text(item.brandName);
             $jQueryItemContent.find(".title").text(item.title);
             $jQueryItemContent.find(".img img").attr("src", item.img);
             $jQueryItemContent.attr("itemId", item.id);
