@@ -4,7 +4,7 @@ function initWidget() {
         var length = Object.keys(config.chosenItems).length;
         if (length < config.widgetSize){
             $("#genericMessage").text("Please choose " + config.widgetSize + " items");
-            $("#genericCode").text();
+            $("#genericCode").text("");
             $("#genericModal").modal();
         }
         else{
