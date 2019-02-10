@@ -1,8 +1,8 @@
 package com.taboola.contentmanager.services.requesthandlers.country;
 
 import com.taboola.contentmanager.dal.Country;
-import com.taboola.contentmanager.models.ContentManagerCrudResponse;
-import com.taboola.contentmanager.models.GetAllCountriesResponse;
+import com.taboola.contentmanager.models.contracts.ContentManagerCrudResponse;
+import com.taboola.contentmanager.models.contracts.GetAllCountriesResponse;
 import com.taboola.contentmanager.services.dal.CountriesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

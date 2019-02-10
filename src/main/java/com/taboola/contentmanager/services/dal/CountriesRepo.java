@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface CountriesRepo extends MongoRepository<Country, String> {
     Optional<Country> findByName(String name);
-    Optional<Country> findByCode(String code);
-    List<Country> findByCodeIn(List<String> codes);
+    List<Country> findBy_idIn(List<String> ids);
+    List<Country> findByNameIn(List<String> countryNames);
 }

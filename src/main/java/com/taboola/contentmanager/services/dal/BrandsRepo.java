@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface BrandsRepo extends MongoRepository<Brand, String> {
     Optional<Brand> findByName(String name);
-//    Optional<Country> findByCode(String code);
-//    List<Country> findByCodeIn(List<String> codes);
+    List<Brand> findByNameIn(List<String> names);
+    List<Brand> findBy_idIn(List<String> ids);
 }

@@ -1,4 +1,4 @@
-package com.taboola.contentmanager.models;
+package com.taboola.contentmanager.models.contracts;
 
 import lombok.Data;
 

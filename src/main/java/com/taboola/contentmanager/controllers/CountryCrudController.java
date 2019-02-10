@@ -1,6 +1,6 @@
 package com.taboola.contentmanager.controllers;
 
-import com.taboola.contentmanager.models.ContentManagerCrudResponse;
+import com.taboola.contentmanager.models.contracts.ContentManagerCrudResponse;
 import com.taboola.contentmanager.services.requesthandlers.country.CountryCrudRequestHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

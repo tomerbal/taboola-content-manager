@@ -4,7 +4,7 @@ $(document).ready(function () {
     getCountries();
     getBrands();
     getAllData(index);
-
+    initFilter();
     initInsert();
 });
 
@@ -26,6 +26,7 @@ function getBrands() {
             }
             var brandInput = $("#brandInput");
             var brandInputEdit = $("#brandInputEdit");
+            var brandInputFilter = $("#brandInputFilter");
             $("#brandChooser").select2({
                 data: brands,
                 placeholder: brands[0].text
@@ -41,6 +42,25 @@ function getBrands() {
                 var data = e.params.data;
                 brandInputEdit.attr("val", data.text);
             });
+
+            $("#brandChooserFilter").select2({
+                data: brands,
+                placeholder: brands[0].text
+            }).on('change', function (e) {
+                var brandIds = $(this).val();
+                var brandsText = [];
+                for (var i in brandIds) {
+                    var brandId = parseInt(brandIds[i]);
+                    for (var j in brands) {
+                        var brand = brands[j];
+                        if (brand.id === brandId) {
+                            brandsText.push(brand.text);
+                        }
+                    }
+                }
+                brandInputFilter.attr("val", brandsText.join(";"));
+            });
+
             brandInput.attr("val", brands[0].text);
         }
     })
@@ -69,6 +89,8 @@ function getCountries() {
             }
             var countryInput = $("#countryInput");
             var countryInputEdit = $("#countryInputEdit");
+            var countryInputFilter = $("#countryInputFilter");
+
             $("#countryChooser").select2({
                 data: countries,
                 placeholder: countries[0].text
@@ -84,6 +106,24 @@ function getCountries() {
                 var data = e.params.data;
                 countryInputEdit.attr("val", data.text);
             });
+
+            $("#countryChooserFilter").select2({
+                data: countries,
+                placeholder: countries[0].text
+            }).on('change', function (e) {
+                var countryIds = $(this).val();
+                var countriesText = [];
+                for (var i in countryIds) {
+                    var countryId = parseInt(countryIds[i]);
+                    for (var j in countries) {
+                        var country = countries[j];
+                        if (country.id === countryId) {
+                            countriesText.push(country.text);
+                        }
+                    }
+                }
+                countryInputFilter.attr("val", countriesText.join(";"));
+            });
             countryInput.attr("val", countries[0].text);
         }
     })
@@ -97,7 +137,6 @@ function getCountries() {
 function getAllData(from) {
     var errMsg = "There was an error retrieving the data";
     $.get("/content-item/get-all-content-items/" + from + "/" + config.batchSize, function (data) {
-        console.log(data);
         if (data.status !== 200) {
             $("#genericMessage").text(errMsg);
             $("#genericCode").text(data.status);
@@ -115,22 +154,10 @@ function getAllData(from) {
 }
 
 function initDashboard() {
-    // Activate tooltip
     $('[data-toggle="tooltip"]').tooltip();
 
-    // Select/Deselect checkboxes
     var checkbox = $('table tbody input[type="checkbox"]');
-    $("#selectAll").click(function () {
-        if (this.checked) {
-            checkbox.each(function () {
-                this.checked = true;
-            });
-        } else {
-            checkbox.each(function () {
-                this.checked = false;
-            });
-        }
-    });
+
     checkbox.click(function () {
         if (!this.checked) {
             $("#selectAll").prop("checked", false);
@@ -188,5 +215,10 @@ function fillDashboard(from, data) {
 
 function paging(element) {
     $(".pagination").find(".active").removeClass("active");
-    getAllData(parseInt(element.innerText) - 1);
+    var from = parseInt(element.innerText) - 1;
+    if (Object.keys(config.filters).length > 0) {
+        getFilteredData(from)
+    } else {
+        getAllData(from);
+    }
 }

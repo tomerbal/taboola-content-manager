@@ -1,13 +1,11 @@
-package com.taboola.contentmanager.models;
+package com.taboola.contentmanager.models.contracts;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
 @Data
-public class EditContentItemRequest {
-    @NotNull
-    private String itemId;
+public class CreateContentItemRequest {
     @NotNull
     private String country;
     @NotNull

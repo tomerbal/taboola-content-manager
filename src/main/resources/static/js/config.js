@@ -1,3 +1,4 @@
 var config = {
-    batchSize: 5
+    batchSize: 5,
+    filters: {}
 };

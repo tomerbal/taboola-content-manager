@@ -1,6 +1,6 @@
 package com.taboola.contentmanager.controllers;
 
-import com.taboola.contentmanager.models.PingResponse;
+import com.taboola.contentmanager.models.contracts.PingResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -5,7 +5,7 @@ import com.taboola.contentmanager.dal.Brand;
 import com.taboola.contentmanager.dal.ContentItem;
 import com.taboola.contentmanager.dal.Country;
 import com.taboola.contentmanager.dal.Error;
-import com.taboola.contentmanager.models.*;
+import com.taboola.contentmanager.models.contracts.*;
 import com.taboola.contentmanager.services.ErrorsContainer;
 import com.taboola.contentmanager.services.dal.BrandsRepo;
 import com.taboola.contentmanager.services.dal.ContentItemRepo;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -44,7 +43,7 @@ public class ContentItemCrudRequestHandlerImpl implements ContentItemCrudRequest
             if (!optionalCountry.isPresent()) {
                 Integer code = 401;
                 Error error = errorsContainer.getErrors().get(code);
-                String msg = error.getMessage() + " - country";
+                String msg = error.getMessage() + " - country: " + countryName;
                 return new ContentManagerCrudResponse(code, msg);
             }
 
@@ -54,7 +53,7 @@ public class ContentItemCrudRequestHandlerImpl implements ContentItemCrudRequest
             if (!optionalBrand.isPresent()) {
                 Integer code = 401;
                 Error error = errorsContainer.getErrors().get(code);
-                String msg = error.getMessage() + " - brand";
+                String msg = error.getMessage() + " - brand: " + brandName;
                 return new ContentManagerCrudResponse(code, msg);
             }
 
@@ -137,7 +136,7 @@ public class ContentItemCrudRequestHandlerImpl implements ContentItemCrudRequest
             if (!optionalBrand.isPresent()) {
                 Integer code = 401;
                 Error error = errorsContainer.getErrors().get(code);
-                String msg = error.getMessage() + " - brand";
+                String msg = error.getMessage() + " - brand: " + brandName;
                 return new ContentManagerCrudResponse(code, msg);
             }
 
@@ -146,7 +145,7 @@ public class ContentItemCrudRequestHandlerImpl implements ContentItemCrudRequest
             if (!optionalCountry.isPresent()) {
                 Integer code = 401;
                 Error error = errorsContainer.getErrors().get(code);
-                String msg = error.getMessage() + " - country";
+                String msg = error.getMessage() + " - country: " + countryName;
                 return new ContentManagerCrudResponse(code, msg);
             }
 

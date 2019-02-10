@@ -1,8 +1,8 @@
 package com.taboola.contentmanager.services.requesthandlers.brand;
 
 import com.taboola.contentmanager.dal.Brand;
-import com.taboola.contentmanager.models.ContentManagerCrudResponse;
-import com.taboola.contentmanager.models.GetAllBrandsResponse;
+import com.taboola.contentmanager.models.contracts.ContentManagerCrudResponse;
+import com.taboola.contentmanager.models.contracts.GetAllBrandsResponse;
 import com.taboola.contentmanager.services.dal.BrandsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

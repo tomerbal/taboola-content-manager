@@ -1,6 +1,5 @@
-package com.taboola.contentmanager.models;
+package com.taboola.contentmanager.models.contracts;
 
-import com.taboola.contentmanager.contracts.ContentItemContract;
 import com.taboola.contentmanager.dal.Country;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
