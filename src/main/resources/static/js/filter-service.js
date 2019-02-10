@@ -6,11 +6,11 @@ function initFilter() {
 
     $('#filterForm').submit(function (event) {
         event.preventDefault();
-        getFilteredData(0)
+        getFilteredData(0, false)
     });
 }
 
-function getFilteredData(from) {
+function getFilteredData(from, pagination) {
     config.filters.dataSize = config.batchSize;
     config.filters.from = from;
 
@@ -34,16 +34,17 @@ function getFilteredData(from) {
         dataType: 'json',
         cache: false,
         success: function (data) {
-            console.log(data);
             fillDashboard(from, data);
             initDashboard();
             filterInput.each(function () {
                 $(this).val("");
             });
             $("#filterItemsModal").modal('hide');
-            $("#genericMessage").text("Item filtered successfully");
-            $("#genericCode").text(200);
-            $("#genericModal").modal();
+            if (!pagination) {
+                $("#genericMessage").text("Item filtered successfully");
+                $("#genericCode").text(200);
+                $("#genericModal").modal();
+            }
         },
         error: function (data) {
             $("#genericMessage").text("There was an error filtering the items");

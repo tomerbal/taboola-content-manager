@@ -217,7 +217,7 @@ function paging(element) {
     $(".pagination").find(".active").removeClass("active");
     var from = parseInt(element.innerText) - 1;
     if (Object.keys(config.filters).length > 0) {
-        getFilteredData(from)
+        getFilteredData(from, true)
     } else {
         getAllData(from);
     }
