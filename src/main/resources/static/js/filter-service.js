@@ -7,7 +7,6 @@ function initFilter() {
     $('#filterForm').submit(function (event) {
         event.preventDefault();
         getFilteredData(0, false);
-        config.chosenItems = {};
     });
 }
 

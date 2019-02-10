@@ -223,6 +223,9 @@ function fillDashboard(from, data) {
             var $jQueryItemContent = $($.parseHTML(htmlItem));
             var itemContentInputCheckbox = $jQueryItemContent.find(".itemContentInputCheckbox");
             itemContentInputCheckbox.attr("id", "checkbox" + i);
+            if (config.chosenItems[item.id]) {
+                itemContentInputCheckbox.prop("checked", true);
+            }
             var itemContentInputLabel = $jQueryItemContent.find(".itemContentInputLabel");
             itemContentInputLabel.attr("for", "checkbox" + i);
             $jQueryItemContent.find(".country").text(item.countryName);

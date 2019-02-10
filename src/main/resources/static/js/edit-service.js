@@ -27,7 +27,6 @@ function editItem(element){
         editInput.each(function () {
             data[$(this).attr("name")] = $(this).val().length > 0 ? $(this).val() : $(this).attr("val");
         });
-        console.log(data);
         $.ajax({
             url: '/content-item/edit',
             type: 'POST',
@@ -44,7 +43,6 @@ function editItem(element){
                 $("#genericMessage").text("Item saved successfully");
                 $("#genericCode").text(200);
                 $("#genericModal").modal();
-                config.chosenItems = {};
             },
             error: function (data) {
                 $("#genericMessage").text("There was an error editing the item");
