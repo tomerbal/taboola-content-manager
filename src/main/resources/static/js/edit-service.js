@@ -44,6 +44,7 @@ function editItem(element){
                 $("#genericMessage").text("Item saved successfully");
                 $("#genericCode").text(200);
                 $("#genericModal").modal();
+                config.chosenItems = {};
             },
             error: function (data) {
                 $("#genericMessage").text("There was an error editing the item");

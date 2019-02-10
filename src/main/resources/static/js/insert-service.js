@@ -21,6 +21,7 @@ function initInsert(){
                 $("#genericMessage").text("Item created successfully");
                 $("#genericCode").text(200);
                 $("#genericModal").modal();
+                config.chosenItems = {};
             },
             error: function (data) {
                 $("#genericMessage").text("There was an error inserting the item");

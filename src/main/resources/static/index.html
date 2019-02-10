@@ -30,7 +30,9 @@
                     <a href="#addItemModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i>
                         <span>Add New Content Item</span></a>
                     <a href="#filterItemsModal" class="btn btn-info" data-toggle="modal">
-                        <span>Query</span></a>
+                        <span>Filter</span></a>
+                    <a id="widgetModalTrigger" class="btn btn-warning" data-toggle="modal">
+                        <span>Create Widget</span></a>
                 </div>
             </div>
         </div>
@@ -150,7 +152,7 @@
         <div class="modal-content">
             <form id="filterForm">
                 <div class="modal-header">
-                    <h4 class="modal-title">Query Items</h4>
+                    <h4 class="modal-title">Filter Items</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
@@ -184,6 +186,89 @@
     </div>
 </div>
 
+<!-- Widget Modal HTML -->
+<div id="widgetModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">You May Like</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <!--Table-->
+                    <table id="widgetTable" class="table table-borderless">
+                        <!--Table body-->
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div class="widget-image-wrapper">
+                                    <img alt="" src="">
+                                </div>
+                                <div class="widget-content-wrapper">
+                                    <h5></h5>
+                                    <h6></h6>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="widget-image-wrapper">
+                                    <img alt="" src="">
+                                </div>
+                                <div class="widget-content-wrapper">
+                                    <h5></h5>
+                                    <h6></h6>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="widget-image-wrapper">
+                                    <img alt="" src="">
+                                </div>
+                                <div class="widget-content-wrapper">
+                                    <h5></h5>
+                                    <h6></h6>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="widget-image-wrapper">
+                                    <img alt="" src="">
+                                </div>
+                                <div class="widget-content-wrapper">
+                                    <h5></h5>
+                                    <h6></h6>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="widget-image-wrapper">
+                                    <img alt="" src="">
+                                </div>
+                                <div class="widget-content-wrapper">
+                                    <h5></h5>
+                                    <h6></h6>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="widget-image-wrapper">
+                                    <img alt="" src="">
+                                </div>
+                                <div class="widget-content-wrapper">
+                                    <h5></h5>
+                                    <h6></h6>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <!--Table body-->
+                    </table>
+                    <!--Table-->
+                </div>
+                <div class="modal-footer">
+
+                </div>
+        </div>
+    </div>
+</div>
+
 <!-- Generic Modal -->
 <div class="modal fade" id="genericModal" role="dialog">
     <div class="modal-dialog">
@@ -209,6 +294,7 @@
 
 <script src="js/config.min.js" type="text/javascript"></script>
 <script src="js/data.min.js" type="text/javascript"></script>
+<script src="js/widget-service.min.js" type="text/javascript"></script>
 <script src="js/insert-service.min.js" type="text/javascript"></script>
 <script src="js/filter-service.min.js" type="text/javascript"></script>
 <script src="js/delete-service.min.js" type="text/javascript"></script>

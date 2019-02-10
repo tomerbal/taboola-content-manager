@@ -1,4 +1,6 @@
 var config = {
     batchSize: 5,
-    filters: {}
+    widgetSize: 6,
+    filters: {},
+    chosenItems: {}
 };

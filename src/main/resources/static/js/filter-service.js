@@ -6,7 +6,8 @@ function initFilter() {
 
     $('#filterForm').submit(function (event) {
         event.preventDefault();
-        getFilteredData(0, false)
+        getFilteredData(0, false);
+        config.chosenItems = {};
     });
 }
 
@@ -35,7 +36,6 @@ function getFilteredData(from, pagination) {
         cache: false,
         success: function (data) {
             fillDashboard(from, data);
-            initDashboard();
             filterInput.each(function () {
                 $(this).val("");
             });

@@ -6,6 +6,7 @@ $(document).ready(function () {
     getAllData(index);
     initFilter();
     initInsert();
+    initWidget();
 });
 
 function getBrands() {
@@ -143,7 +144,6 @@ function getAllData(from) {
             $("#genericModal").modal();
         } else {
             fillDashboard(from, data);
-            initDashboard();
         }
     })
         .fail(function (err) {
@@ -159,8 +159,30 @@ function initDashboard() {
     var checkbox = $('table tbody input[type="checkbox"]');
 
     checkbox.click(function () {
-        if (!this.checked) {
-            $("#selectAll").prop("checked", false);
+        var checked = this.checked;
+        var tr = $(this).closest("tr");
+        var itemId = tr.attr("itemId");
+        var country = tr.find(".country").text();
+        var brand = tr.find(".brand").text();
+        var title = tr.find(".title").text();
+        var img = tr.find(".img img").attr("src");
+        var length = Object.keys(config.chosenItems).length;
+        if (checked) {
+            if (length === config.widgetSize) {
+                $("#genericMessage").text("Please choose up tp " + config.widgetSize + " items");
+                $("#genericCode").text();
+                $("#genericModal").modal();
+                this.checked = false;
+            } else {
+                config.chosenItems[itemId] = {
+                    country: country,
+                    brand: brand,
+                    title: title,
+                    img: img
+                }
+            }
+        } else {
+            delete config.chosenItems[itemId];
         }
     });
 }
@@ -210,6 +232,7 @@ function fillDashboard(from, data) {
             $jQueryItemContent.attr("itemId", item.id);
             $("#dashboardTableBody").append($jQueryItemContent);
         }
+        initDashboard();
     });
 }
 

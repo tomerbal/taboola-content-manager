@@ -203,6 +203,10 @@ table.table .avatar {
     background: #ddd;
 }
 
+#widgetModal .modal-dialog{
+    width: 1080px;
+}
+
 .modal .modal-header, .modal .modal-body, .modal .modal-footer {
     padding: 20px 30px;
 }
@@ -230,4 +234,14 @@ table.table .avatar {
 }
 .modal form label {
     font-weight: normal;
+}
+
+.widget-image-wrapper{
+    width: 300px;
+    height: 200px;
+}
+
+.widget-image-wrapper img{
+    width: 100%;
+    height: 200px;
 }
